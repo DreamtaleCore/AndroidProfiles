@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<!-- saved from url=(0046)https://developer.dji.com/user/apps/#app/30350 -->
+<html class=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>DJI Developer</title><meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"><meta content="dji, developer, sdk, mobile sdk, guidance sdk, onboard sdk, documentation, api reference, drone" name="keywords"><link href="https://devcn.djicdn.com/images/favicon-ff3498d082.png" rel="shortcut icon" type="image/png"><link href="./DJI Developer-NBZD_files/vendor-420cd73c11.css" rel="stylesheet"><link href="./DJI Developer-NBZD_files/app-d18b31ec68.css" rel="stylesheet"><script async="" src="./DJI Developer-NBZD_files/analytics.js"></script><script>window.Config = window.config = {
+  locale: "en",
+  env: "production",
+  api_host: "//dev.dji.com",
+  cdn_host: "//devcn.djicdn.com"
+};</script><script>var Cookie = {
+  parse: function() {
+    var result = {}
+    var cookieArr = document.cookie.split(';')
+    for (var i = 0, length = cookieArr.length; i < length; i++) {
+      var kv = cookieArr[i].trim().split('=')
+      result[kv[0]] = kv[1]
+    }
+    return result
+  },
+  get: function(key) {
+    var cookie = this.parse()
+    if (cookie[key]) {
+      return cookie[key]
+    } else {
+      // console.log('Can not get cookie: %s', key)
+      return null
+    }
+  },
+  set: function(key, value, days) {
+    days = days || 30
+    var date = new Date()
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000))
+    var expires = '; expires=' + date.toGMTString()
+    document.cookie = key + '=' + value + expires + '; path=/'
+  },
+  remove: function(key) {
+    document.cookie = key + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  }
+}
+var authRouter = {
+  authPaths: ['/user'],
+  nonAuthPaths: ['/login', '/register'],
+  run: function() {
+    var self = this
+    var pathname = window.location.pathname
+    var logged = this.checkLoggedIn()
+    var activated = this.checkActivated()
+    var developer = this.isDeveloper()
+    var target = ''
+    // non auth page
+    if (logged) {
+      this.nonAuthPaths.forEach(function(_path) {
+        if (pathname.match(_path)) {
+          target = 'user'
+        }
+      })
+    } else {
+      // rm localstorage current-user if didn't log in
+      // localStorage.removeItem('current-user')
+    }
+    this.authPaths.forEach(function(path, idx) {
+      if (pathname.match(path)) {
+        if (!logged) {
+          // did not log in
+          target = 'login'
+        } else {
+          // logged in
+          if (!activated) {
+            // did not activate
+            if (!pathname.match('user/activate')) {
+              target = 'user/activate'
+            }
+          } else {
+            // activated
+            if (pathname.match('user/activate')) {
+              // in 'activate page'
+              target = 'user/apply'
+            } else {
+              // not in 'activate page'
+              if (!developer) {
+                // did not apply developer
+                if (!pathname.match('user/apply')) {
+                  target = 'user/apply'
+                }
+              } else {
+                // applied developer
+                if (pathname.match('user/apply')) {
+                  target = 'user'
+                }
+              }
+            }
+          }
+        }
+      }
+    })
+    if (target) {
+      this.direct(target)
+    }
+  },
+  checkLoggedIn: function() {
+    return !!Cookie.get('_sdk_meta_key')
+  },
+  isDeveloper: function() {
+    return Cookie.get('_user_is_developer') == 'true'
+  },
+  checkActivated: function() {
+    return Cookie.get('_user_activated') == 'true'
+  },
+  direct: function(target) {
+    var lang = Config.locale == 'en' ? '' : '/' + Config.locale
+    var url = window.location.origin + lang + '/' + target
+    if (target == 'login') {
+      var callback_url = window.location.href.replace(window.location.search, '')
+      url += '?callback_url=' + callback_url
+    }
+    window.location.href = url
+  }
+}
+authRouter.run()</script><style type="text/css">.fancybox-margin{margin-right:0px;}</style></head><body class="dev-en"><nav id="site-header" class="site-header navbar">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="https://developer.dji.com/" class="logo">
+        <img src="./DJI Developer-NBZD_files/dji-logo@2x-3c25936a48.png">Developer
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" id="header-navbar">
+      <ul class="nav navbar-nav">
+        <li class="hovedown">
+          <a class="hovedown-toggle " href="javascript:void(0);">SDK<span class="caret"></span></a>
+          <ul class="hovedown-menu">
+            <li><a href="https://developer.dji.com/mobile-sdk">Mobile SDK</a></li>
+            <li><a href="https://developer.dji.com/onboard-sdk">Onboard SDK</a></li>
+            <li><a href="https://developer.dji.com/guidance-sdk">Guidance SDK</a></li>
+          </ul>
+        </li>
+        <li><a href="https://developer.dji.com/products" class="">Products</a></li>
+        <li><a href="https://developer.dji.com/showcase" class="">Showcase</a></li>
+        <li><a href="https://developer.dji.com/news" class="">News</a></li>
+        <li><a href="http://forum.dev.dji.com/en" target="_blank">Forum</a></li>
+        <li class="hovedown">
+          <a class="hovedown-toggle" href="javascript:void(0);">GitHub<span class="caret"></span></a>
+          <ul class="hovedown-menu">
+            <li><a href="https://github.com/dji-sdk/Mobile-SDK-iOS" target="_blank">iOS SDK</a></li>
+            <li><a href="https://github.com/dji-sdk/Mobile-SDK-Android" target="_blank">Android SDK</a></li>
+            <li><a href="https://github.com/dji-sdk/Onboard-SDK" target="_blank">Onboard SDK</a></li>
+            <li><a href="https://github.com/dji-sdk/Guidance-SDK" target="_blank">Guidance SDK</a></li>
+          </ul>
+        </li>
+        <li><a href="https://developer.dji.com/challenge2016" target="_blank">Challenge</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right nav-user" style="display: none;">
+        <li><a href="https://developer.dji.com/login">Login</a></li>
+        <li><a href="https://developer.dji.com/register" class="head-cta">Register</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right nav-user">
+        <li class="hovedown">
+          <a class="hovedown-toggle" href="javascript:void(0);"><i class="fa fa-user"></i></a>
+          <ul class="hovedown-menu hovedown-menu-right">
+            <li><a href="https://developer.dji.com/user">User Center</a></li>
+            <li><a href="javascript:void(0);">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- #header-nav -->
+<div class="user-center-page"><div class="container"><div class="site-sidebar"><dl><dt>User Center</dt><dd><a class="active" href="https://developer.dji.com/user/apps">Apps</a></dd><dd><a href="https://developer.dji.com/user/showcase">Showcase</a></dd><dd><a href="https://developer.dji.com/user/account">Account</a></dd></dl></div><div class="site-main"><div class="user-apps-page active: ready" id="user-app"><div class="app-list-container" style="display: none;"><div class="header"><div class="dropdown"><a class="selected" data-toggle="dropdown" href="javascript:void(0);">&nbsp;<i class="fa fa-caret-down"></i></a><ul class="dropdown-menu"><li><a href="https://developer.dji.com/user/apps/#all"> All SDK</a></li><li><a href="https://developer.dji.com/user/apps/#mobile"> Mobile SDK</a></li><li><a href="https://developer.dji.com/user/apps/#onboard"> Onboard SDK</a></li></ul></div><button class="btn-main pull-right" type="button">Create App</button></div><div class="app-list row"></div><div class="console-desc" style="display: none;"><h4 class="title">Console Description</h4><ul class="content"><li>A 24-digit hexadecimal App Key will be generated upon successful App Key requests.</li><li>Each application has a unique App Key.</li><li>Activations: The number of mobile devices that have installed and activated the app via internet. There is no limit to the number of mobile devices.</li><li>There is no limit to the number of App Keys requested.</li><li>App Key cannot be edited or deleted whilst there are existing mobile devices using the Application that is activated with it. For more, please contact &lt;a href='mailto:dev@dji.com'&gt;dev@dji.com&lt;/a&gt; for questions</li></ul></div><div class="console-desc" style="display: none;"><h4 class="title">Console Description</h4><ul class="content"><li>A 256-digit hexadecimal communication key will be generated upon successfully Application created.</li><li>Each application has a unique APP ID.</li><li>Activations: The number of aircraft bound to the APP ID. There is no limit to the number of aircrafts.</li><li>There is no limit to the number of APP IDs requested.</li><li>Once the app is bound to the aircraft which is activated, you cannot change or delete the communication key.</li></ul></div></div><div class="app-detail-container"><div class="header"><nav><a class="btn-back" href="https://developer.dji.com/user/apps/#all"><i class="fa fa-angle-left"></i>&nbsp;Back</a></nav></div><div class="app-info"><h2 class="title">App Information</h2><div class="row form-group"><div class="col-xs-3"><label>SDK Type</label></div><div class="col-xs-9"><span class="value">Onboard SDK</span></div></div><div class="row form-group"><div class="col-xs-3"><label>APP Name</label></div><div class="col-xs-9"><span class="value">nbzd</span></div><div class="col-xs-9" style="display: none;"><input type="text"></div></div><div class="row form-group" style="display: none;"><div class="col-xs-3"><label>Software Platform</label></div><div class="col-xs-9"><span class="value">Android </span></div></div><div class="row form-group"><div class="col-xs-3"><label>APP ID</label></div><div class="col-xs-9"><span class="value">1030350 </span></div></div><div class="row form-group" style="display: none;"><div class="col-xs-3"><label>Bundle Identifier</label></div><div class="col-xs-9"><span class="value"> </span></div></div><div class="row form-group" style="display: none;"><div class="col-xs-3"><label>App Key</label></div><div class="col-xs-9"><span class="value">45329ec1812491e6ba23a409a9506d8e </span></div></div><div class="row form-group"><div class="col-xs-3"><label>App Key</label></div><div class="col-xs-9"><span class="value">4223c112f956f3498e773be076887ef4a8e75b0b7b07f247a86691ecab783011 </span></div></div><div class="row form-group"><div class="col-xs-3"><label>Category</label></div><div class="col-xs-9"><span class="value">Motion tracking </span></div><div class="col-xs-9" style="display: none;"><div class="select-container"><select><option value="agricultural_applications">Agricultural applications</option><option value="cartography">Cartography</option><option value="disaster_probe">Disaster probe</option><option value="motion_tracking">Motion tracking</option><option value="film_shooting">Film shooting</option><option value="animal_feeding">Animal feeding</option><option value="nature_discovery">Nature discovery</option><option value="power_line_patrol">Power line patrol</option><option value="other">Other</option></select><input class="other-input" type="text" style="display: none;"><div class="fa fa-caret-down"></div></div></div></div><div class="row form-group"><div class="col-xs-3"><label>Description</label></div><div class="col-xs-9"><div class="value">For summer camp </div></div><div class="col-xs-9" style="display: none;"><textarea></textarea></div></div><div class="form-btns"><button class="btn-normal" type="button"><i class="fa fa-pencil"></i>&nbsp;Edit</button><button class="btn-normal" type="button"><i class="fa fa-trash-o"></i>&nbsp;Delete</button></div><div class="form-btns" style="display: none;"><button class="btn-main" type="button">&nbsp;<i class="fa fa-save"></i>Save</button><button class="btn-normal" type="button">Cancel</button></div></div><hr><div class="app-mfi" style="display: none;"><h2 class="title">MFi Program</h2><div class="desc">The MFi Program ("Made for iPhone/iPod/iPad") is Apple's licensing program for developers of hardware and software peripherals that work with Apple's iPod, iPad and iPhone. In order to offer your app on the Apple iTunes App Store with DJI SDK, your app needs to be approved under the MFi program before submitting it to the Apple iTunes App Store. Please click on the link to Learn more about the <a href="https://github.com/dji-sdk/Mobile-SDK-iOS/tree/master/MFi%20Application%20Process" target="_blank"><u>MFi Approval Process for iOS Apps using DJI Mobile SDK</u></a>.</div><div style="display: none;"><div class="form-group row"><div class="col-xs-3">Status:</div><div class="col-xs-9"><b style="display: none;">Review in Progress</b><b style="display: none;">Application Approved</b><b style="display: none;">Application Rejected</b></div></div><div class="form-group row" style="display: none;"><div class="col-xs-3">PPID</div><div class="col-xs-9"><div class="row"><div class="col-xs-3" style="display: none;"><ul><li><b>Phantom Series</b></li><li>215513-0011</li><li>Complete</li><li>Phantom 4</li></ul></div><div class="col-xs-3" style="display: none;"><ul><li><b>Phantom 3</b></li><li>215513-0007</li><li>Complete</li><li>PHANTOM 3 4K</li></ul></div><div class="col-xs-3" style="display: none;"><ul><li><b>Inspire 1</b></li><li>215513-0004</li><li>Complete</li><li>T600</li></ul></div></div></div></div><div class="form-group row" style="display: none;"><div class="col-xs-3">Reasons for Rejection:</div><div class="col-xs-9"><p> </p></div></div></div><div class="form-btns"><button class="btn-normal" type="button">Apply</button></div></div></div><div class="modal fade dialog-create-app" id="createAppDialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h3 class="title">Create APP</h3></div><div class="modal-body"><form><div class="form-group row"><div class="col-xs-4"><label class="input-name">SDK</label></div><div class="col-xs-8"><div class="select-container"><select><option value="mobile"> Mobile SDK</option><option value="onboard"> Onboard SDK</option></select><i class="fa fa-caret-down"></i></div></div></div><div class="form-group row"><div class="col-xs-4"><label class="input-name">APP Name</label></div><div class="col-xs-8"><input type="text"></div></div><div class="form-group row"><div class="col-xs-4"><label class="input-name">Software Platform</label></div><div class="col-xs-8"><div class="select-container"><select><option value="1"> Android</option><option value="2"> iOS</option></select><i class="fa fa-caret-down"></i></div></div></div><div class="form-group row"><div class="col-xs-4"><label class="input-name"><span>Package Name</span><span style="display: none;">Bundle Identifier</span><a class="tooltip-bundleid" data-placement="bottom" data-toggle="popover" data-trigger="focus" id="bundleidTooltip" role="button" tabindex="0" data-original-title="" title=""><i class="fa fa-info-circle"></i></a></label></div><div class="col-xs-8"><input type="text"></div></div><div class="form-group row"><div class="col-xs-4"><label class="input-name">Category</label></div><div class="col-xs-8"><div class="select-container"><select><option value=""></option><option value="agricultural_applications">Agricultural applications</option><option value="cartography">Cartography</option><option value="disaster_probe">Disaster probe</option><option value="motion_tracking">Motion tracking</option><option value="film_shooting">Film shooting</option><option value="animal_feeding">Animal feeding</option><option value="nature_discovery">Nature discovery</option><option value="power_line_patrol">Power line patrol</option><option value="other">Other</option></select><i class="fa fa-caret-down"></i><input class="extra-input" type="text" style="display: none;"></div></div></div><div class="form-group row"><div class="col-xs-4"><label class="input-name">Description</label></div><div class="col-xs-8"><textarea></textarea></div></div><div class="modal-footer"><button class="btn-cancel pull-left" type="button">Cancel</button><button class="btn-main pull-right">Create</button></div></form></div></div></div></div><div class="modal fade dialog-destory-app" id="destoryAppDialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h3 class="title">Are you sure?</h3></div><div class="modal-body"><form><div class="form-group"><p>Please input your password to confirm</p><input type="password"><div class="alert alert-error" style="display: none;">Password should be 6-20 characters in length.</div><p class="input-tips">Please note that App Keys created after the release of Mobile SDK 3.0 are not compatible with Mobile SDK 2.4.1 or earlier; App Keys created before the release of Mobile SDK 3.0 are not compatible with Mobile SDK 3.0.</p></div></form><div class="modal-footer"><button class="btn-main pull-right" type="button">Destroy</button><button class="btn-cancel pull-left" data-target="#destoryAppDialog" data-toggle="modal" type="button">Cancel</button></div></div></div></div></div><div class="modal fade term-modal" id="termModal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h1 class="text-center">DJI Developer Agreement</h1></div><div class="modal-body"><div class="article"><p><b>Please read carefully</b></p> <p>By clicking "Agree", you confirm that you have read and agreed to the terms in the following agreements: "<a href="https://developer.dji.com/en/policies/privacy" target="_blank">Privacy Policy</a>", "<a href="https://developer.dji.com/en/policies/terms" target="_blank">Terms of Use</a>", "<a href="https://developer.dji.com/en/policies/eula" target="_blank">End User License Agreement</a>", "<a href="https://developer.dji.com/en/policies/developer" target="_blank">DJI Developer Policy</a>" Please make sure that you fully understand and accept the relevant provisions, including: </p> <ol> <li>The exclusion or limitation of liability clause</li> <li>The terms of the applicable law and jurisdiction</li> <li>The bolded and/or underlined areas, which are emphasized for their importance</li> </ol> <p><b>Note</b></p> <p>Filling in the registration page, reading and agreeing to the DJI Developer Agreement and completing the registration process indicates that you have fully read, understand and accept the entire content of the agreement. If, in the process of using the DJI Developer platform, you engage in a dispute with some other party, the dispute should be resolved according to an agreement between you and said party – DJI has no involvement in such disputes. </p> <p>The beta version of the DJI SDK firmware is released specifically for DJI SDK developers, and must only be used for development purposes. Please do not distribute the firmware to other parties.</p> <p><b><u>If you do not agree with any of the terms stated in the DJI Developer Agreement, do not continue with the registration process.</u></b></p></div></div><div class="modal-footer"><div class="form-group"><button class="btn-cancel pull-left" data-target="#termModal" data-toggle="modal" type="button">Cancel</button><a class="btn-main pull-right" href="javascript:void(0);">Agree</a></div></div></div></div></div><div class="hidden" id="bundleIdTootipTemplate"><p>You can <a href="https://developer.dji.com/user/mobile-sdk/android-configuration" target="_blank">View details</a> of Package Name for Android apps.</p><p>You can <a href="https://developer.dji.com/user/mobile-sdk/ios-configuration" target="_blank">View details</a> of Bundle Identifier for iOS apps.</p></div><div class="modal fade mfi-modal" id="mfi-modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h3 class="title">MFi Program Application Form</h3></div><div class="modal-body"><form><div class="form-group"><div class="row"><div class="col-xs-5"><label>Supported DJI Platforms *</label></div><div class="col-xs-7"><div class="select-container"><select><option value="1">All</option><option value="4">Phantom 4</option><option value="2">Phantom 3</option><option value="3">Inspire 1</option></select><i class="fa fa-caret-down"></i></div></div></div></div><div class="form-group"><div class="row"><div class="col-xs-5"><label>Name of app as it will appear in App Store *</label></div><div class="col-xs-7"><input type="text"></div></div></div><div class="form-group"><div class="row"><div class="col-xs-5"><label>APP version *</label></div><div class="col-xs-7"><input type="text"></div></div></div><div class="form-group"><div class="row"><div class="col-xs-5"><label>Bundle Identifier *</label></div><div class="col-xs-7"><input type="text"><p class="desc">( The unique CFBundleIdentifier that specifies this application. Example: com.domain.app )</p></div></div></div><div class="form-group"><div class="row"><div class="col-xs-5"><label>Device protocol names used by this App (if required) </label></div><div class="col-xs-7"><input type="text"><p class="desc">Note: if more than one protocol name is used, all protocols should be entered as a comma separated list.<br>Example: com.domain.protocol1, com.domain.protocol2<br></p></div></div></div><div class="form-group"><div class="row"><div class="col-xs-5"><label>Please describe the iOS app for this accessory, including a general functional overview and its key features *</label></div><div class="col-xs-7"><textarea></textarea></div></div></div></form></div><div class="modal-footer"><button class="btn-cancel pull-left">Cancel</button><button class="btn-main pull-right">Submit</button></div></div></div></div></div></div></div></div><script>var app_categories = {
+  'agricultural_applications': "Agricultural applications",
+  'cartography': "Cartography",
+  'disaster_probe': "Disaster probe",
+  'motion_tracking': "Motion tracking",
+  'film_shooting': "Film shooting",
+  'animal_feeding': "Animal feeding",
+  'nature_discovery': "Nature discovery",
+  'power_line_patrol': "Power line patrol",
+  'other': "Other"
+}</script><footer id="site-footer" class="site-footer">
+  <div class="container">
+    <div class="foot-nav row">
+      <nav class="link-list col-xs-2">
+        <span class="title">SDK</span>
+        <a href="https://developer.dji.com/mobile-sdk">Mobile SDK</a>
+        <a href="https://developer.dji.com/onboard-sdk">Onboard SDK</a>
+        <a href="https://developer.dji.com/guidance-sdk">Guidance SDK</a>
+      </nav>
+      <nav class="link-list col-xs-2">
+        <span class="title">Info</span>
+        <a href="https://developer.dji.com/showcase">Showcase</a>
+        <a href="https://developer.dji.com/products">Products</a>
+        <a href="https://developer.dji.com/news">News</a>
+      </nav>
+      <nav class="link-list col-xs-2">
+        <span class="title">Community</span>
+        <a target="_blank" href="http://forum.dev.dji.com/en">Forum</a>
+        <a target="_blank" href="http://github.com/dji-sdk">GitHub</a>
+        <a target="_blank" href="http://stackoverflow.com/questions/tagged/dji-sdk">Stack Overflow</a>
+      </nav>
+      <nav class="link-list col-xs-2">
+        <span class="title">Contact Us</span>
+        <a href="mailto:dev@dji.com">dev@dji.com</a>
+      </nav>
+      <nav class="link-list col-xs-3">
+        <span class="title">Business Cooperation</span>
+        <a href="mailto:dev.bd@dji.com">dev.bd@dji.com</a>
+      </nav>
+    </div>
+
+    <div class="foot-copyright row">
+      <div class="col-xs-3 foot-logo">
+        <img src="./DJI Developer-NBZD_files/dji-logo-foot-6618a668b0.png" class="">
+      </div>
+      <div class="copyright col-xs-7">
+        <span>Copyright © 2016 DJI All Rights Reserved</span>
+        <a href="https://developer.dji.com/policies/privacy">Privacy Policy</a>
+        <a href="https://developer.dji.com/policies/terms">Terms of Use</a>
+      </div>
+      <div class="col-xs-2">
+        <div class="lang-selector">
+          <select dir="rtl">
+            <option value="en">English</option>
+            <option value="cn">中文</option>
+          </select>
+          <i class="fa fa-globe"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- #footer -->
+<script src="./DJI Developer-NBZD_files/vendor-70b8cdca92.js" type="text/javascript"></script><script src="./DJI Developer-NBZD_files/app-655631e1a5.js" type="text/javascript"></script><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-43055594-1', 'auto');
+ga('send', 'pageview');</script></body></html>
