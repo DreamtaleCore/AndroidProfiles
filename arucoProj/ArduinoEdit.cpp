@@ -5,6 +5,8 @@ HardwareSerial Serial;
 
 #include <Servo.h>
 
+#define DEBUG_MODE
+
 const int SERVO_PIN_1 = 12;
 const int SERVO_PIN_2 = 11;
 const int SERVO_INIT1 = 1;
@@ -36,9 +38,11 @@ void justMov(int servoIdx, int val)
             delay(2);
         }
 
+#ifdef DEBUG_MODE
     Serial.print(servoIdx);
     Serial.print("       ");
     Serial.println(val);
+#endif
 
     lastVal[servoIdx] = val;
 }
@@ -62,9 +66,11 @@ bool parseCmd(String recv, int &val1, int &val2)
                 str1 += c;
         }
     }
+#ifdef DEBUG_MODE
     Serial.println(str1);
     Serial.println(str2);
     Serial.println("=============");
+#endif
     val1 = str1.toInt();
     val2 = str2.toInt();
 
@@ -79,12 +85,12 @@ void setup()
 
     servo[0].write(SERVO_INIT1);
     servo[1].write(SERVO_INIT2);
-    Serial.println("It's ok!");
+    Serial.println("servos are ready!");
 }
 
 void loop()
 {
-  recvData = "";
+    recvData = "";
     while (Serial.available())
     {
         recvData += (char)Serial.read();
@@ -93,18 +99,21 @@ void loop()
 
     if(recvData.length() > 0)
     {
-      Serial.println(recvData);
-      Serial.println("********");
+#ifdef DEBUG_MODE
+        Serial.println(recvData);
+        Serial.println("********");
+#endif
         int ang1, ang2;
         if(parseCmd(recvData, ang1, ang2))
         {
             justMov(0, ang1);
             justMov(1, ang2);
-
+#ifdef DEBUG_MODE
             Serial.print(ang1);
             Serial.print("  ");
             Serial.print(ang2);
             Serial.println();
+#endif
         }
     }
 }
