@@ -6,6 +6,7 @@ HardwareSerial Serial;
 #include <Servo.h>
 
 #define DEBUG_MODE
+//#define HIGHT_SPEED
 
 const int SERVO_PIN_1 = 12;
 const int SERVO_PIN_2 = 11;
@@ -29,13 +30,21 @@ void justMov(int servoIdx, int val)
         for(int i = lastVal[servoIdx]; i < val; i++)
         {
             servo[servoIdx].write(i);
+#ifdef HIGHT_SPEED
+            delayMicroseconds(200);
+#else
             delay(2);
+#endif
         }
     else
         for(int i = lastVal[servoIdx]; i > val; i--)
         {
             servo[servoIdx].write(i);
+#ifdef HIGHT_SPEED
+            delayMicroseconds(200);
+#else
             delay(2);
+#endif
         }
 
 #ifdef DEBUG_MODE
