@@ -9,22 +9,19 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-#SOURCES += /home/nbzd/bin/aruco-2.0.9/src/*.cpp \
-#    aruco_tracker.cpp
-
-SOURCES += \
-    mymarker.cpp \
-    client.cxx \
-    ArduinoEdit.cpp
+SOURCES += /home/yf/ws/src/uav_core_logic/src/main.cxx \
+           /home/yf/ws/src/onboard_sdk/dji_sdk_demo/src/client_beta.cxx
     #camera_calibration.cpp
 
 #HEADERS += /home/nbzd/bin/aruco-2.0.9/src/*.h
+HEADERS += /home/yf/ws/src/uav_core_logic/src/generalHeader.h \
+           /home/yf/ws/src/uav_core_logic/src/recvInfo.h
 
 INCLUDEPATH += /opt/ros/indigo/include \
                 /usr/local/include \
                 /usr/local/include/eigen3 \
                 /home/yf/bin/arduino-1.6.10/hardware/arduino/avr/cores/arduino \
-                /home/yf/ws/src/Onboard-SDK-ROS-3.1/dji_sdk/include    \
+                /home/yf/ws/src/onboard_sdk/dji_sdk/include    \
                 /home/yf/bin/arduino-1.6.10/libraries/Servo/src
 
 

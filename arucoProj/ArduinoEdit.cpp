@@ -5,7 +5,7 @@ HardwareSerial Serial;
 
 #include <Servo.h>
 
-#define DEBUG_MODE
+//#define DEBUG_MODE
 //#define HIGHT_SPEED
 
 const int SERVO_PIN_1 = 12;

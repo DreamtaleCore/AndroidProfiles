@@ -9,9 +9,8 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-SOURCES += main.cpp \
-    commCtrl.cxx \
-    arduinocomm.cpp
+SOURCES += Object.cpp \
+            multipleObjectTracking.cpp
 
 INCLUDEPATH += /opt/ros/indigo/include \
                 /usr/local/include \
@@ -20,8 +19,4 @@ INCLUDEPATH += /opt/ros/indigo/include \
 LIBS += /usr/local/lib/*.so \
         /opt/ros/indigo/lib/*.so
 
-HEADERS += \
-    sysHeaders.h \
-    stdHeaders.h \
-    commCtrl.h \
-    arduinoHeaders.h
+HEADERS += Object.h
