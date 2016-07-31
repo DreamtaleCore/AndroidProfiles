@@ -220,7 +220,7 @@ int main(int argc, char* argv[])
 
     //while(1)
     {
-        src = imread("/home/yf/Pictures/fub7.jpg", 1);
+        src = imread("/home/yf/Pictures/fub1.jpg", 1);
         cameraFeed = src;
 
         if( !src.data )
