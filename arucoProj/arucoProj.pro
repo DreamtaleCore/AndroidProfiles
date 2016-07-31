@@ -9,8 +9,7 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-SOURCES += /home/yf/ws/src/uav_core_logic/src/main.cxx \
-           /home/yf/ws/src/onboard_sdk/dji_sdk_demo/src/client_beta.cxx
+SOURCES += /home/yf/ws/src/uav_vision/src/detectDoll.cxx
     #camera_calibration.cpp
 
 #HEADERS += /home/nbzd/bin/aruco-2.0.9/src/*.h

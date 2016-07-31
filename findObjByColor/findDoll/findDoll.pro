@@ -9,8 +9,8 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-SOURCES += Object.cpp \
-            multipleObjectTracking.cpp
+SOURCES += \
+    findsquire.cpp
 
 HEADERS += Onject.h
 
