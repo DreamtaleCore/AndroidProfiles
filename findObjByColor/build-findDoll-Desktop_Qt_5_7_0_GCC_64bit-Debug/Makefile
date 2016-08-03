@@ -48,10 +48,10 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../findDoll/Object.cpp \
-		../findDoll/multipleObjectTracking.cpp 
-OBJECTS       = Object.o \
-		multipleObjectTracking.o
+SOURCES       = ../findDoll/squareDetect.cpp \
+		../findDoll/squareTest.cpp 
+OBJECTS       = squareDetect.o \
+		squareTest.o
 DIST          = ../../../../bin/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../../bin/Qt5.7.0/5.7/gcc_64/mkspecs/common/unix.conf \
 		../../../../bin/Qt5.7.0/5.7/gcc_64/mkspecs/common/linux.conf \
@@ -198,8 +198,8 @@ DIST          = ../../../../bin/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf
 		../../../../bin/Qt5.7.0/5.7/gcc_64/mkspecs/features/exceptions.prf \
 		../../../../bin/Qt5.7.0/5.7/gcc_64/mkspecs/features/yacc.prf \
 		../../../../bin/Qt5.7.0/5.7/gcc_64/mkspecs/features/lex.prf \
-		../findDoll/findDoll.pro Onject.h ../findDoll/Object.cpp \
-		../findDoll/multipleObjectTracking.cpp
+		../findDoll/findDoll.pro ../findDoll/squareDetect.h ../findDoll/squareDetect.cpp \
+		../findDoll/squareTest.cpp
 QMAKE_TARGET  = findDoll
 DESTDIR       = 
 TARGET        = findDoll
@@ -522,8 +522,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents Onject.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../findDoll/Object.cpp ../findDoll/multipleObjectTracking.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../findDoll/squareDetect.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../findDoll/squareDetect.cpp ../findDoll/squareTest.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -563,11 +563,11 @@ compiler_clean:
 
 ####### Compile
 
-Object.o: ../findDoll/Object.cpp ../findDoll/Object.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Object.o ../findDoll/Object.cpp
+squareDetect.o: ../findDoll/squareDetect.cpp ../findDoll/squareDetect.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o squareDetect.o ../findDoll/squareDetect.cpp
 
-multipleObjectTracking.o: ../findDoll/multipleObjectTracking.cpp ../findDoll/Object.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o multipleObjectTracking.o ../findDoll/multipleObjectTracking.cpp
+squareTest.o: ../findDoll/squareTest.cpp ../findDoll/squareDetect.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o squareTest.o ../findDoll/squareTest.cpp
 
 ####### Install
 

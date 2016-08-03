@@ -3,16 +3,14 @@ QT -= gui
 
 CONFIG += c++11
 
-TARGET = findDoll
+TARGET = squareDetect
 CONFIG += console
 CONFIG -= app_bundle
 
 TEMPLATE = app
 
-SOURCES +=  squareDetect.cpp \
-            squareTest.cpp
-
-HEADERS += squareDetect.h
+SOURCES += src/*.cpp
+HEADERS += include/*.h
 
 INCLUDEPATH += /usr/local/include
 
